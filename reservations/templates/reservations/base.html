@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интернет Кафе</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://cdn.rawgit.com/naptha/tesseract.js/2.0.0/dist/tesseract.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Главная</a></li>
+                <li><a href="{% url 'food_menu' %}">Меню</a></li>
+                <li><a href="{% url 'product_shop' %}">Магазин Продуктов</a></li>
+                <li><a href="{% url 'phone_accessories_shop' %}">Магазин Аксессуаров</a></li>
+                <li><a href="{% url 'delivery' %}">Доставка и Такси</a></li>
+                <li><a href="{% url 'add_to_cart' product_id=1 %}">чтото</a></li>
+                <li><a href="{% url 'view_cart' %}">Корзина</a></li>
+                <li><a href="{% url 'checkout' %}">Оформить заказ</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <p>© 2024 Интернет кафе</p>
+    </footer>
+
+    <script>
+        function startVoiceCommand() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'ru-RU';
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                const command = event.results[0][0].transcript.toLowerCase();
+
+                if (command.includes('еда')) {
+                    window.location.href = '{% url "food_menu" %}';
+                } else if (command.includes('доставка')) {
+                    window.location.href = '{% url "delivery" %}';
+                } else if (command.includes('магазин продуктов')) {
+                    window.location.href = '{% url "product_shop" %}';
+                } else if (command.includes('аксессуары')) {
+                    window.location.href = '{% url "phone_accessories_shop" %}';
+                } else {
+                    alert('Команда не распознана. Пожалуйста, попробуйте снова.');
+                }
+            };
+
+            recognition.onerror = function(event) {
+                alert('Произошла ошибка при распознавании речи: ' + event.error);
+            };
+        }
+
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), { zoom: 5, center: { lat: 55.7558, lng: 37.6173 } });
+            {% for location in locations %}
+                new google.maps.Marker({
+                    position: { lat: {{ location.latitude }}, lng: {{ location.longitude }} },
+                    map: map,
+                    title: "{{ location.name }}"
+                });
+            {% endfor %}
+        }
+    </script>
+
+    <button onclick="startVoiceCommand()">Говорить</button>
+
+</body>
+</html>

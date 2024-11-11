@@ -1,0 +1,30 @@
+{% extends 'reservations/base.html' %}
+{% block content %}
+    <h1>Доставка и Такси</h1>
+    <div id="map" style="height: 400px; width: 100%;"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+    <script>
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 5,
+                center: { lat: 55.7558, lng: 37.6173 },
+            });
+
+            // Массив местоположений, переданный из Django
+            const locations = [
+                {% for location in locations %}
+                    {name: "{{ location.name }}", lat: {{ location.latitude }}, lng: {{ location.longitude }}},
+                {% endfor %}
+            ];
+
+            // Добавление маркеров для каждого местоположения
+            locations.forEach((location) => {
+                new google.maps.Marker({
+                    position: { lat: location.lat, lng: location.lng },
+                    map: map,
+                    title: location.name
+                });
+            });
+        }
+    </script>
+{% endblock %}

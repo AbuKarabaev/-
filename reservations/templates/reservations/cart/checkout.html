@@ -1,0 +1,31 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление заказа</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Оформление заказа</h1>
+
+    <h2>Ваша корзина</h2>
+    <ul>
+        {% for product_id, product_info in cart.items %}
+            <li>{{ product_info.name }} - {{ product_info.quantity }} шт. - {{ product_info.price }} руб.</li>
+        {% endfor %}
+    </ul>
+    <p>Общая стоимость: {{ total_price }} руб.</p>
+
+    <h3>Введите данные для оформления заказа</h3>
+    <form method="post" action="{% url 'checkout' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="number" name="quantity" min="1" required>
+    <button type="submit">Submit</button>
+</form>
+
+</body>
+</html>

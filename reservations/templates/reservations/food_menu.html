@@ -1,0 +1,10 @@
+{% extends 'reservations/base.html' %}
+
+{% block content %}
+    <h1>Меню</h1>
+    <ul>
+        <li><a href="{% url 'fast_food' %}">Фастфуд</a></li>
+        <li><a href="{% url 'coffee_menu' %}">Кофе</a></li>
+        <li><a href="{% url 'desserts' %}">Десерты</a></li>
+    </ul>
+{% endblock %}

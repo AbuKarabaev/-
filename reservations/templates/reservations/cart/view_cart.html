@@ -1,0 +1,25 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Ваша корзина</h1>
+    {% if cart %}
+        <ul>
+            {% for product_id, product_info in cart.items %}
+                <li>{{ product_info.name }} - {{ product_info.quantity }} шт. - {{ product_info.price }} руб.</li>
+            {% endfor %}
+        </ul>
+        <p>Общая стоимость: {{ total_price }} руб.</p>
+        <a href="{% url 'checkout' %}">Перейти к оформлению заказа</a>
+    {% else %}
+        <p>Корзина пуста.</p>
+    {% endif %}
+</body>
+</html>

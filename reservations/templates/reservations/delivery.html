@@ -1,0 +1,19 @@
+{% extends 'reservations/base.html' %}
+{% block content %}
+    <h1>Доставка и Такси</h1>
+    <div id="map" style="height: 400px; width: 100%;"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+    <script>
+        function initMap() {
+            const location = { 
+                lat: {{ location.latitude }}, 
+                lng: {{ location.longitude }} 
+            };
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 12,
+                center: location,
+            });
+            new google.maps.Marker({ position: location, map: map });
+        }
+    </script>
+{% endblock %}
